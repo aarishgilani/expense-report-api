@@ -1,11 +1,17 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Add Swagger services
+// Add Swagger services.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Configure Entity Framework with SQLite.
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite("Data Source=expenses.db"));
 
 var app = builder.Build();
 
