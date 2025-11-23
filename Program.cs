@@ -35,6 +35,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+// swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -43,6 +44,14 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Expense Report API v1");
         options.RoutePrefix = "swagger"; // Access at /swagger
     });
+}
+
+// faker data seeding
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    context.Database.EnsureCreated();
+    DbSeeder.SeedData(context);
 }
 
 
